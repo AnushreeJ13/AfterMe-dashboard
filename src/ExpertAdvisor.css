@@ -1,0 +1,135 @@
+.trusted-appointees-page {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.page-header {
+  margin-bottom: 2.5rem;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.appointees-section {
+  margin-bottom: 3rem;
+}
+
+.add-appointee-card {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 3rem 2rem;
+  max-width: 300px;
+  text-align: center;
+  border: 2px dashed var(--border-color);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.add-appointee-card:hover {
+  border-color: var(--primary-teal);
+  background: var(--light-teal);
+  transform: translateY(-2px);
+}
+
+.add-icon-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px dashed var(--primary-teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  color: var(--primary-teal);
+}
+
+.add-icon-circle svg {
+  width: 32px;
+  height: 32px;
+}
+
+.add-appointee-text {
+  font-size: 1rem;
+  color: #A8B4C0;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.legacy-section {
+  background: var(--light-teal);
+  border-radius: 16px;
+  padding: 2rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 1.5rem;
+}
+
+.section-subtitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 1.5rem;
+}
+
+.folders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.folder-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--white);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.folder-item:hover {
+  border-color: var(--primary-teal);
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.folder-icon {
+  width: 24px;
+  height: 24px;
+  color: var(--primary-teal);
+  flex-shrink: 0;
+}
+
+.folder-name {
+  font-size: 1rem;
+  color: var(--text-dark);
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .trusted-appointees-page {
+    padding: 1rem;
+  }
+  
+  .page-title {
+    font-size: 1.5rem;
+  }
+  
+  .add-appointee-card {
+    max-width: 100%;
+  }
+  
+  .legacy-section {
+    padding: 1.5rem;
+  }
+}
