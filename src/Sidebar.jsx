@@ -18,7 +18,7 @@ useEffect(() => {
     return;
   }
 
-  fetch("https://api.afterme.com/api/auth/me", {
+  fetch("https://afterme-rouge.vercel.app/api/auth/me", {
     headers: {
       Authorization: `Bearer ${token}`
     }
