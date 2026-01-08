@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import Dashboard from './Dashboard';
@@ -8,10 +8,12 @@ import IdentificationDocuments from './IdentificationDocuments';
 import ImportantContacts from './ImportantContacts';
 import './App.css';
 import ExpertAdvisor from './ExpertAdvisor';
+import Login from './login';
 
 function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [user, setUser] = useState(null);
 
   const handleNavigateToCategory = (categoryId) => {
     setSelectedCategory(categoryId);
@@ -38,7 +40,7 @@ function App() {
     // Default tab rendering
     switch(activeTab) {
       case 'dashboard':
-        return <Dashboard />;
+        return <Dashboard user={user} />;
       case 'manage':
         return <LegacyAssetsPage onNavigateToCategory={handleNavigateToCategory} />;
       case 'trusted':
@@ -57,12 +59,43 @@ function App() {
     setSelectedCategory(null); // Reset category when changing tabs
   };
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    fetch('/api/auth/me', {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('No session');
+        return res.json();
+      })
+      .then(data => setUser(data))
+      .catch(() => {
+        localStorage.removeItem('token');
+      });
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setUser(null);
+  };
+
+  // If not authenticated, show login page full-screen
+  if (!user) {
+    return (
+      <div className="App">
+        <Login onLogin={(u) => setUser(u)} />
+      </div>
+    );
+  }
+
   return (
     <div className="App">
       <div className="app-container">
         <Header activeTab={activeTab} onTabChange={handleTabChange} />
         <div className="app-body">
-          <Sidebar />
+          <Sidebar user={user} onLogout={handleLogout} />
           <main className="main-content">
             {renderContent()}
           </main>

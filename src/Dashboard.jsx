@@ -1,10 +1,15 @@
 import React from 'react';
 import './Dashboard.css';
 
-const Dashboard = () => {
+const Dashboard = ({ user }) => {
   return (
     <div className="dashboard-content-only">
       <h1 className="dashboard-title">My Dashboard</h1>
+      {user && (
+        <div className="dashboard-welcome" style={{marginBottom:12}}>
+          <strong>Welcome,</strong> {user.firstName} {user.lastName} &nbsp; <span style={{color:'#666'}}>&lt;{user.email}&gt;</span>
+        </div>
+      )}
       
       <div className="dashboard-cards">
         <div className="dashboard-card">

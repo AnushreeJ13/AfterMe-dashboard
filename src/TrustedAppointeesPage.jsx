@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './TrustedAppointeesPage.css';
 
 const TrustedAppointeesPage = () => {
@@ -130,6 +130,25 @@ const TrustedAppointeesPage = () => {
     }
   });
 
+  // load documents from backend for current user
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    fetch('/api/docs', { headers: { Authorization: `Bearer ${token}` } })
+      .then(res => res.json())
+      .then(list => {
+        const grouped = {};
+        (list || []).forEach(d => {
+          grouped[d.folder] = grouped[d.folder] || {};
+          grouped[d.folder][d.subitem] = grouped[d.folder][d.subitem] || [];
+          grouped[d.folder][d.subitem].push(d);
+        });
+        setDocuments(prev => ({ ...prev, ...grouped }));
+      })
+      .catch(() => {});
+  }, []);
+
   const folders = {
     'Identification & Documents': [
       'Passport/ ID card',
@@ -201,20 +220,40 @@ const TrustedAppointeesPage = () => {
   };
 
   const handleSave = () => {
-    const newDoc = {
-      id: Date.now(),
-      ...formData,
-      folder: currentFolder,
-      subitem: currentSubitem
-    };
+    // Build FormData for files + metadata
+    const fd = new FormData();
+    fd.append('folder', currentFolder);
+    fd.append('subitem', currentSubitem);
+    fd.append('metadata', JSON.stringify(formData));
 
-    setDocuments(prev => ({
-      ...prev,
-      [currentFolder]: {
-        ...prev[currentFolder],
-        [currentSubitem]: [...(prev[currentFolder]?.[currentSubitem] || []), newDoc]
+    // attach actual files from all file inputs in the modal
+    const fileInputs = Array.from(document.querySelectorAll('input[type="file"]'));
+    fileInputs.forEach(input => {
+      if (input.files && input.files.length > 0) {
+        Array.from(input.files).forEach(f => fd.append('files', f));
       }
-    }));
+    });
+
+    const token = localStorage.getItem('token');
+
+    fetch('/api/docs/upload', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      body: fd
+    })
+      .then(res => res.json())
+      .then(result => {
+        if (result && result.doc) {
+          setDocuments(prev => ({
+            ...prev,
+            [currentFolder]: {
+              ...prev[currentFolder],
+              [currentSubitem]: [...(prev[currentFolder]?.[currentSubitem] || []), result.doc]
+            }
+          }));
+        }
+      })
+      .catch(err => console.error(err));
 
     setShowModal(false);
     setModalStep(1);
@@ -374,8 +413,8 @@ const TrustedAppointeesPage = () => {
                         <span className="subitem-name">{subitem}</span>
                       </div>
 
-                      {documents[folderName]?.[subitem]?.map((doc) => (
-                        <div key={doc.id} className="document-item">
+                      {documents[folderName]?.[subitem]?.map((doc, idx) => (
+                        <div key={doc._id || doc.id || `${folderName}-${subitem}-${idx}`} className="document-item">
                           <svg className="document-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                             <polyline points="14 2 14 8 20 8"></polyline>

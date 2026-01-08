@@ -231,6 +231,23 @@
   cursor: pointer;
   transition: all 0.3s ease;
 }
+.managebtn {
+  width: 100%;
+  background: var(--primary-pink);
+  color: var(--white);
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.managebtn:hover {
+  background: var(--dark-pink);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
 
 .manage-plan-btn:hover {
   background: var(--dark-teal);

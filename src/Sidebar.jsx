@@ -1,44 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import './Sidebar.css';
 
-const Sidebar = () => {
- const [user, setUser] = useState({
-  firstName: "Gauri",
-  lastName: "Aggarwal",
-  email: "gauriaggarwal0112@gmail.com",
-  role:"Member",
-  profileCompletion:0
-});
+const Sidebar = ({ user: propUser, onLogout }) => {
+  const [user, setUser] = useState(propUser || {
+    firstName: "",
+    lastName: "",
+    email: "",
+    role: "Member",
+    profileCompletion: 0
+  });
 
-useEffect(() => {
-  const token = localStorage.getItem("token");
+  useEffect(() => {
+    // If parent passed user, use it; otherwise try to fetch using stored token
+    if (propUser) return;
 
-  if (!token) {
-    console.warn("No token found");
-    return;
-  }
+    const token = localStorage.getItem("token");
+    if (!token) return;
 
-  fetch("https://afterme-rouge.vercel.app/api/auth/me", {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  })
-    .then(res => {
-      if (!res.ok) throw new Error("Unauthorized");
-      return res.json();
+    fetch('/api/auth/me', {
+      headers: { Authorization: `Bearer ${token}` }
     })
-    .then(data => setUser(data))
-    .catch(err => {
-      console.error(err);
-      localStorage.removeItem("token");
-    });
+      .then(res => {
+        if (!res.ok) throw new Error('Unauthorized');
+        return res.json();
+      })
+      .then(data => setUser(data))
+      .catch(err => {
+        console.error(err);
+        localStorage.removeItem('token');
+      });
+  }, [propUser]);
 
-}, []);
-
-  const fullName = `${user.firstName} ${user.lastName}`;
- const initials =
-  (user.firstName?.[0] || "").toUpperCase() +
-  (user.lastName?.[0] || "").toUpperCase();
+  const fullName = `${user.firstName || ''} ${user.lastName || ''}`.trim();
+  const initials =
+    (user.firstName?.[0] || "").toUpperCase() +
+    (user.lastName?.[0] || "").toUpperCase();
 
   return (
     <aside className="sidebar">
@@ -62,9 +58,9 @@ useEffect(() => {
 
         <div className="profile-completion">
           <div className="completion-bar">
-            <div className="completion-fill" style={{width: '33%'}}></div>
+            <div className="completion-fill" style={{width: `${user.profileCompletion || 0}%`}}></div>
           </div>
-          <span className="completion-text">33%</span>
+          <span className="completion-text">{user.profileCompletion || 0}%</span>
         </div>
       </div>
 
@@ -102,6 +98,22 @@ useEffect(() => {
         </div>
 
         <button className="manage-plan-btn">Manage my Plan</button>
+      </div>
+
+      <div style={{padding: '12px 16px'}}>
+        <button
+          onClick={() => {
+            if (onLogout) onLogout();
+            else {
+              localStorage.removeItem('token');
+              window.location.reload();
+            }
+          }}
+          className="managebtn"
+          style={{border:'none', color:'#fff'}}
+        >
+          Logout
+        </button>
       </div>
 
       <div className="sidebar-section">
