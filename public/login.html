@@ -681,6 +681,10 @@ var base_url  = "content/themes/akrolab-theme/index.html"
 </script>
 
 <script>
+  // API base: use window.API_BASE if provided (set by hosting), otherwise default to deployed backend
+  const API = window.API_BASE || 'https://dashboard-9qul.onrender.com';
+  const FRONTEND = window.FRONTEND_BASE || 'http://localhost:3000';
+
   document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -692,7 +696,7 @@ var base_url  = "content/themes/akrolab-theme/index.html"
     const password = passwordInput.value;
 
     try {
-      const res = await fetch('http://localhost:5000/api/auth/login', {
+      const res = await fetch(`${API}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -723,7 +727,7 @@ var base_url  = "content/themes/akrolab-theme/index.html"
       }
 
       // 🚀 REDIRECT TO DEPLOYED DASHBOARD
-      window.location.href = "http://localhost:3000/dashboard";
+      window.location.href = `${FRONTEND}/dashboard`;
 
     } catch (err) {
       console.error(err);
@@ -746,7 +750,7 @@ var base_url  = "content/themes/akrolab-theme/index.html"
     const password = document.getElementById('signupPassword');
 
     try {
-      const res = await fetch('http://localhost:5000/api/auth/signup', {
+      const res = await fetch(`${API}/api/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
