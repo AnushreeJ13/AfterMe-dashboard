@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import Dashboard from './Dashboard';
+import Login from './login';
 import LegacyAssetsPage from './LegacyAssetsPage';
 import TrustedAppointeesPage from './TrustedAppointeesPage';
 import IdentificationDocuments from './IdentificationDocuments';
@@ -22,6 +23,23 @@ function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [user, setUser] = useState(null);
+
+  // on mount, try to load current user from token
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    fetch('/api/auth/me', { headers: { Authorization: `Bearer ${token}` } })
+      .then(res => {
+        if (!res.ok) throw new Error('Not authenticated');
+        return res.json();
+      })
+      .then(u => setUser(u))
+      .catch(() => {
+        localStorage.removeItem('token');
+        setUser(null);
+      });
+  }, []);
 
   const handleNavigateToCategory = (categoryId) => {
     setSelectedCategory(categoryId);
@@ -111,6 +129,18 @@ function App() {
     setActiveTab(tab);
     setSelectedCategory(null); // reset when switching tabs
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setUser(null);
+    // ensure UI reflects logout
+    window.location.href = '/';
+  };
+
+  // If not authenticated, show the Login component
+  if (!user) {
+    return <Login onLogin={(u) => setUser(u)} />;
+  }
 
   return (
     <div className="App">
