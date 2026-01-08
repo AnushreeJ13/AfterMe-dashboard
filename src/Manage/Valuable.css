@@ -1,0 +1,334 @@
+/* ValuablePossessions.css */
+
+/* Variables - EXACT SAME as Insurance page */
+:root {
+    --light-teal: #f0f9f7;
+    --primary-teal: #4C9A87;
+    --white: #ffffff;
+    --text-dark: #333333;
+    --text-light: #666666;
+  }
+  
+  /* EVERYTHING BELOW IS IDENTICAL TO Insurance.css except the possession-specific colors */
+  
+  .key-devices-page {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    background: var(--light-teal);
+    min-height: calc(100vh - 160px);
+  }
+  
+  .page-header {
+    margin-bottom: 2.5rem;
+  }
+  
+  .page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+  }
+  
+  .breadcrumb {
+    font-size: 0.95rem;
+    color: var(--text-light);
+  }
+  
+  .breadcrumb-link {
+    color: #7B68A6;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+  
+  .breadcrumb-link:hover {
+    color: #5A4A8C;
+    text-decoration: underline;
+  }
+  
+  .breadcrumb-separator {
+    margin: 0 0.5rem;
+    color: var(--text-light);
+  }
+  
+  .breadcrumb-current {
+    color: var(--text-dark);
+    font-weight: 500;
+  }
+  
+  .devices-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    padding-bottom: 2rem;
+  }
+  
+  .device-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .device-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    border-color: var(--primary-teal);
+  }
+  
+  /* Subtle animation effect on hover */
+  .device-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(76, 154, 135, 0.1), transparent);
+    transition: left 0.6s ease;
+  }
+  
+  .device-card:hover::before {
+    left: 100%;
+  }
+  
+  .device-icon-circle {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 1.5rem;
+    background: linear-gradient(135deg, 
+      rgba(76, 154, 135, 0.2) 0%, 
+      rgba(76, 154, 135, 0.3) 50%, 
+      rgba(76, 154, 135, 0.2) 100%);
+    border-radius: 50% 50% 50% 45%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-teal);
+    position: relative;
+    transition: transform 0.3s ease;
+  }
+  
+  .device-card:hover .device-icon-circle {
+    transform: scale(1.05);
+  }
+  
+  .device-icon-circle::before {
+    content: '';
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    z-index: 0;
+  }
+  
+  .device-icon-circle svg {
+    width: 48px;
+    height: 48px;
+    position: relative;
+    z-index: 1;
+    stroke-width: 2;
+  }
+  
+  .device-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+    min-height: 2.6em;
+    line-height: 1.3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .device-count {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .count-badge {
+    display: inline-block;
+    padding: 0.6rem 1.8rem;
+    border: 2px solid #E85D4A;
+    border-radius: 25px;
+    color: #E85D4A;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    background: transparent;
+  }
+  
+  .device-card:hover .count-badge {
+    background: #E85D4A;
+    color: white;
+    transform: scale(1.05);
+  }
+  
+  /* ONLY DIFFERENCE FROM INSURANCE.CSS - Possession-specific colors */
+  .device-card[data-possession-type="vehicle"] .device-icon-circle {
+    background: linear-gradient(135deg, 
+      rgba(76, 154, 135, 0.2) 0%, 
+      rgba(76, 154, 135, 0.3) 50%, 
+      rgba(76, 154, 135, 0.2) 100%);
+  }
+  
+  .device-card[data-possession-type="jewellery"] .device-icon-circle {
+    background: linear-gradient(135deg, 
+      rgba(255, 193, 7, 0.2) 0%, 
+      rgba(255, 193, 7, 0.3) 50%, 
+      rgba(255, 193, 7, 0.2) 100%);
+  }
+  
+  .device-card[data-possession-type="collections"] .device-icon-circle {
+    background: linear-gradient(135deg, 
+      rgba(156, 39, 176, 0.2) 0%, 
+      rgba(156, 39, 176, 0.3) 50%, 
+      rgba(156, 39, 176, 0.2) 100%);
+  }
+  
+  .device-card[data-possession-type="safe"] .device-icon-circle {
+    background: linear-gradient(135deg, 
+      rgba(33, 150, 243, 0.2) 0%, 
+      rgba(33, 150, 243, 0.3) 50%, 
+      rgba(33, 150, 243, 0.2) 100%);
+  }
+  
+  .device-card[data-possession-type="misc"] .device-icon-circle {
+    background: linear-gradient(135deg, 
+      rgba(96, 125, 139, 0.2) 0%, 
+      rgba(96, 125, 139, 0.3) 50%, 
+      rgba(96, 125, 139, 0.2) 100%);
+  }
+  
+  /* Modal overlay for consistency */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  /* Empty State Styling - EXACT SAME as Insurance page */
+  .empty-state-message {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-light);
+    font-size: 1.1rem;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 12px;
+    margin-top: 2rem;
+    border: 2px dashed var(--primary-teal);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .empty-state-message svg {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1rem;
+    color: var(--primary-teal);
+    opacity: 0.7;
+  }
+  
+  .empty-state-message p {
+    margin: 0;
+    line-height: 1.6;
+  }
+  
+  /* Responsive Design - EXACT SAME as Insurance page */
+  @media (max-width: 1024px) {
+    .devices-grid {
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .key-devices-page {
+      padding: 1rem;
+    }
+  
+    .devices-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+  
+    .device-card {
+      padding: 1.5rem 1rem;
+    }
+  
+    .page-title {
+      font-size: 1.5rem;
+    }
+  
+    .device-icon-circle {
+      width: 90px;
+      height: 90px;
+      margin-bottom: 1rem;
+    }
+  
+    .device-icon-circle svg {
+      width: 36px;
+      height: 36px;
+    }
+  
+    .device-title {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+  
+    .count-badge {
+      padding: 0.4rem 1.2rem;
+      font-size: 0.85rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .devices-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .device-card {
+      padding: 2rem 1rem;
+    }
+  }
+  
+  /* Animation for card loading - EXACT SAME as Insurance page */
+  @keyframes cardFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .device-card {
+    animation: cardFadeIn 0.4s ease forwards;
+    opacity: 0;
+  }
+  
+  /* Staggered animation for cards - updated for 5 items */
+  .device-card:nth-child(1) { animation-delay: 0.05s; }
+  .device-card:nth-child(2) { animation-delay: 0.1s; }
+  .device-card:nth-child(3) { animation-delay: 0.15s; }
+  .device-card:nth-child(4) { animation-delay: 0.2s; }
+  .device-card:nth-child(5) { animation-delay: 0.25s; }
